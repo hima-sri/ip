@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  questions-db:
+    image: mongo:latest
+    container_name: questions_mongodb
+    volumes:
+      - questions_mongodb_data:/data/db
+    networks:
+      - assessmentnetwork
+
+  springbootapp:
+    image : questionsms:v1
+    container_name: questions_service
+    ports:
+      - "8086:8085"
+    depends_on:
+      - questions-db
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://questions-db:27017/mydatabase
+    networks:
+      - assessmentnetwork
+
+networks:
+  assessmentnetwork:
+
+volumes:
+  questions_mongodb_data:
