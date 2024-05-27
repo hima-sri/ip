@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  springboot-app:
+    image: assessment:v5
+    container_name: springboot-app
+    ports:
+      - "8085:8085"
+    networks:
+      - assessment_network
+    depends_on:
+      - assessment_database
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://assessment_database:3306/assessment
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+
+  assessment_database:
+    image: mysql:latest
+    container_name: assessment_database
+    networks:
+      - assessment_network
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: assessment
+
+networks:
+  assessment_network:
+    driver: bridge
+
